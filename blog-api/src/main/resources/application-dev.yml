@@ -1,0 +1,113 @@
+# \u670D\u52A1\u5668\u7AEF\u53E3\u53F7
+server:
+  port: 8090
+
+# \u535A\u5BA2\u76F8\u5173\u914D\u7F6E
+blog:
+  name: "Naccl's Blog"
+  # \u540E\u7AEF\u670D\u52A1URL https://api.naccl.top/blog
+  api: http://localhost:${server.port}
+  # \u540E\u53F0\u7BA1\u7406URL https://admin.naccl.top
+  cms: http://localhost:8080
+  # \u524D\u53F0\u754C\u9762URL https://naccl.top
+  view: http://localhost:8081
+
+spring:
+  # \u6570\u636E\u5E93\u8FDE\u63A5\u4FE1\u606F
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://www.saddog.top:3306/nblog?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: Yhw19980123.
+
+  # Redis\u8FDE\u63A5\u4FE1\u606F
+  redis:
+    host: www.saddog.top
+    port: 6379
+    password: 123456
+    database: 0
+    timeout: 10000ms
+
+  # \u90AE\u4EF6\u914D\u7F6E
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 934615781@qq.com
+    password: xflbuybidpdwbchc
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            port: 465
+          ssl:
+            enable: true
+
+# MyBatis\u914D\u7F6E
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+# \u65E5\u5FD7\u7EA7\u522B\u914D\u7F6E
+logging:
+  level:
+    root: info
+    top.naccl: debug
+  file:
+    name: blog-api/log/blog-dev
+
+# Token\u914D\u7F6E
+token:
+  # 1000 * 60 * 60 * 24 * 3
+  expireTime: 259200000
+  # \u26A0\uFE0F \u751F\u4EA7\u73AF\u5883\u52A1\u5FC5\u4F7F\u7528 Base64 \u7684 64 \u5B57\u8282\u5BC6\u94A5\uFF08HS512\uFF09
+  secretKey: abcdefghijklmnopqrstuvwxyz
+
+# \u8BC4\u8BBA\u914D\u7F6E
+comment:
+  # \u535A\u4E3B\u63A5\u6536\u8BC4\u8BBA\u63D0\u9192\u65B9\u5F0F: tg / mail
+  notify:
+    channel: mail
+  # \u65B0\u8BC4\u8BBA\u662F\u5426\u9ED8\u8BA4\u516C\u5F00
+  default-open: true
+
+# Telegram\u914D\u7F6E
+tg:
+  bot:
+    api: https://api.telegram.org/bot
+    token: 1234567890:qwertyuiopasdfghjklzxcvbnm
+    chat-id: 1234567890
+    use-proxy: false
+    use-reverse-proxy: true
+    reverse-proxy-url: https://tg-api-open.naccl.workers.dev
+
+# HTTP\u4EE3\u7406\u914D\u7F6E
+http:
+  proxy:
+    server:
+      host: 127.0.0.1
+      port: 7890
+      timeout: 10000
+
+# \u4E0A\u4F20\u914D\u7F6E
+upload:
+  # local / github / upyun
+  channel: local
+
+  file:
+    path: C:/Users/nblog/Desktop/upload/
+    access-path: /image/**
+    resources-locations: file:${upload.file.path}
+
+  github:
+    token: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    username: Naccl
+    repos: test
+    repos-path: /comment/avatar
+
+  upyun:
+    bucket-name: nblog
+    username: naccl
+    password: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    path: /comment/avatar
+    domain: https://cdn.example.com
