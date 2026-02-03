@@ -7,23 +7,23 @@ blog:
   name: "Naccl's Blog"
   # 生产环境需要修改为服务器ip或域名
   # 后端服务URL https://api.naccl.top/blog
-  api: http://www.saddog.top:${server.port}
+  api: http://localhost:${server.port}
   # 后台管理URL https://admin.naccl.top
-  cms: http://www.saddog.top:8080
+  cms: http://localhost:8080
   # 前台界面URL https://naccl.top
-  view: http://www.saddog.top:8081
+  view: http://localhost:8081
 
 spring:
   # 数据库连接信息
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://www.saddog.top:3306/nblog?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/nblog?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: Yhw19980123.
 
   # Redis连接信息
   redis:
-    host: www.saddog.top
+    host: localhost
     port: 6379
     password: 123456
     database: 0
@@ -34,8 +34,8 @@ spring:
   mail:
     host: smtp.qq.com
     port: 465
-    username: 934615781@qq.com
-    password: xflbuybidpdwbchc
+    username:
+    password:
     properties:
       mail:
         smtp:
@@ -58,19 +58,19 @@ logging:
   file:
     name: blog-api/log/blog-dev
 
-# Token\u914D\u7F6E
+# 1000 * 60 * 60 * 24 * 3 token过期时间
 token:
   # 1000 * 60 * 60 * 24 * 3
   expireTime: 259200000
-  # \u26A0\uFE0F \u751F\u4EA7\u73AF\u5883\u52A1\u5FC5\u4F7F\u7528 Base64 \u7684 64 \u5B57\u8282\u5BC6\u94A5\uFF08HS512\uFF09
+  # 生产环境务必修改此配置，否则无法保证token安全性
   secretKey: abcdefghijklmnopqrstuvwxyz
 
-# \u8BC4\u8BBA\u914D\u7F6E
+
 comment:
-  # \u535A\u4E3B\u63A5\u6536\u8BC4\u8BBA\u63D0\u9192\u65B9\u5F0F: tg / mail
+  # 博主接收评论提醒方式: Telegram=tg 邮箱=mail (访客评论提醒固定为邮箱方式)
   notify:
     channel: mail
-  # \u65B0\u8BC4\u8BBA\u662F\u5426\u9ED8\u8BA4\u516C\u5F00
+  # 新评论是否默认公开
   default-open: true
 
 # 如果选择邮箱提醒方式，以下可以无需修改

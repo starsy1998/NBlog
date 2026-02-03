@@ -1,39 +1,41 @@
-# \u670D\u52A1\u5668\u7AEF\u53E3\u53F7
+# 服务器端口号
 server:
   port: 8090
 
-# \u535A\u5BA2\u76F8\u5173\u914D\u7F6E
+# 博客名称
 blog:
   name: "Naccl's Blog"
-  # \u540E\u7AEF\u670D\u52A1URL https://api.naccl.top/blog
+  # 生产环境需要修改为服务器ip或域名
+  # 后端服务URL https://api.naccl.top/blog
   api: http://localhost:${server.port}
-  # \u540E\u53F0\u7BA1\u7406URL https://admin.naccl.top
+  # 后台管理URL https://admin.naccl.top
   cms: http://localhost:8080
-  # \u524D\u53F0\u754C\u9762URL https://naccl.top
+  # 前台界面URL https://naccl.top
   view: http://localhost:8081
 
 spring:
-  # \u6570\u636E\u5E93\u8FDE\u63A5\u4FE1\u606F
+  # 数据库连接信息
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://www.saddog.top:3306/nblog?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/nblog?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: Yhw19980123.
 
-  # Redis\u8FDE\u63A5\u4FE1\u606F
+  # Redis连接信息
   redis:
-    host: www.saddog.top
+    host: localhost
     port: 6379
     password: 123456
     database: 0
     timeout: 10000ms
 
-  # \u90AE\u4EF6\u914D\u7F6E
+  # 如果选择邮箱提醒方式，则会在收到评论后向填写的邮箱自身发送一封邮件(提醒自己)；如果选择tg，则填写的邮箱只作为提醒访客的发送方
+  # 阿里云邮箱，其它邮箱服务商配置参考关键字"spring mail 服务器"
   mail:
     host: smtp.qq.com
     port: 465
-    username: 934615781@qq.com
-    password: xflbuybidpdwbchc
+    username:
+    password:
     properties:
       mail:
         smtp:
@@ -42,13 +44,13 @@ spring:
           ssl:
             enable: true
 
-# MyBatis\u914D\u7F6E
+# MyBatis配置
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
 
-# \u65E5\u5FD7\u7EA7\u522B\u914D\u7F6E
+# 日志级别配置
 logging:
   level:
     root: info
@@ -56,32 +58,37 @@ logging:
   file:
     name: blog-api/log/blog-dev
 
-# Token\u914D\u7F6E
+# 1000 * 60 * 60 * 24 * 3 token过期时间
 token:
   # 1000 * 60 * 60 * 24 * 3
   expireTime: 259200000
-  # \u26A0\uFE0F \u751F\u4EA7\u73AF\u5883\u52A1\u5FC5\u4F7F\u7528 Base64 \u7684 64 \u5B57\u8282\u5BC6\u94A5\uFF08HS512\uFF09
+  # 生产环境务必修改此配置，否则无法保证token安全性
   secretKey: abcdefghijklmnopqrstuvwxyz
 
-# \u8BC4\u8BBA\u914D\u7F6E
+
 comment:
-  # \u535A\u4E3B\u63A5\u6536\u8BC4\u8BBA\u63D0\u9192\u65B9\u5F0F: tg / mail
+  # 博主接收评论提醒方式: Telegram=tg 邮箱=mail (访客评论提醒固定为邮箱方式)
   notify:
     channel: mail
-  # \u65B0\u8BC4\u8BBA\u662F\u5426\u9ED8\u8BA4\u516C\u5F00
+  # 新评论是否默认公开
   default-open: true
 
-# Telegram\u914D\u7F6E
+# 如果选择邮箱提醒方式，以下可以无需修改
 tg:
   bot:
     api: https://api.telegram.org/bot
+    # bot的token，可以从 @BotFather 处获取
     token: 1234567890:qwertyuiopasdfghjklzxcvbnm
+    # 自己账号和bot的聊天会话id
     chat-id: 1234567890
+    # 是否使用代理
     use-proxy: false
+    # 是否使用反向代理
     use-reverse-proxy: true
+    # 反向代理URL，请自行搭建，示例API随时可能关闭
     reverse-proxy-url: https://tg-api-open.naccl.workers.dev
 
-# HTTP\u4EE3\u7406\u914D\u7F6E
+# 代理配置，如不使用无需修改 (目前用于发送Telegram请求)
 http:
   proxy:
     server:
@@ -89,13 +96,13 @@ http:
       port: 7890
       timeout: 10000
 
-# \u4E0A\u4F20\u914D\u7F6E
+# 评论中QQ头像存储方式: 本地:local GitHub:github 又拍云:upyun
 upload:
   # local / github / upyun
   channel: local
-
+  # 静态文件上传访问路径 Windows环境例如: C:/Users/nblog/Desktop/upload/ Linux环境例如：/home/nblog/upload/
   file:
-    path: C:/Users/nblog/Desktop/upload/
+    path: /opt/blog-api/data/
     access-path: /image/**
     resources-locations: file:${upload.file.path}
 
